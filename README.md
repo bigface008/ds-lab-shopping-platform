@@ -13,6 +13,6 @@ Compress all your lab materials to a file and name it as SDICLab5_team leaders's
 | School ID    | Name   |
 | ------------ | ------ |
 | 5142609052   | 沈小洲 |
+| 516030910313 | 宋博仪 |
 | 516030910459 | 邵欣阳 |
 | 516030910460 | 汪喆昊 |
-|              | 宋博仪 |
