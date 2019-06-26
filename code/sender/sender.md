@@ -14,7 +14,7 @@ python ./sender.py 127.0.0.1 5000 orders.json
 
 若要在本地测试Sender，可以运行[`receiver.py`](./receiver.py)模拟服务器。
 ```shell
-python ./receiver.py
+python ./receiver.py # 默认运行在http://127.0.0.1:5000
 ```
 
 ## 接口
