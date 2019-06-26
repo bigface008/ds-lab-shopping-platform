@@ -36,20 +36,26 @@ i = 0
 for order in orders:
     # Send orders.
     r = requests.post(post_url, data=order)
+    if r.status_code != requests.codes.accepted:
+        print "Post of order", i, "failed"
+        continue
     order_id = r.json()["id"] # This line may fail if the server responds with wrong status code.
     print "Post of order", order_id, "response code:", r.status_code, "content:", r.json()
 
     # Get result.
     while True:
-        time.sleep(5)
+        time.sleep(1)
         r = requests.get(get_url + '%d' % order_id)
+        if r.status_code != requests.codes.ok:
+            print "Get of", order_id, "order failed with wrong status code."
+            continue
         if_succeed = r.json()["success"]
         if if_succeed == True:
+            print "Get of order", order_id, "response code:", r.status_code, "content:", r.json()
             break
         elif if_succeed == False:
-            print "Get of order" + order_id + "failed."
-            exit()
+            print "Get of order" + order_id + "failed with report of failure."
+            break
         else:
             pass
-    print "Get of order", order_id, "response code:", r.status_code, "content:", r.json()
     i += 1
