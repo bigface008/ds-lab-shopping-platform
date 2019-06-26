@@ -1,0 +1,15 @@
+{
+    "user_id": 123456,
+    "initiator": "RMB",
+    "time": 1558868400000,
+    "items": [
+        {
+            "id": "1",
+            "number": 2
+        },
+        {
+            "id": "3",
+            "number": 1
+        }
+    ]
+}
