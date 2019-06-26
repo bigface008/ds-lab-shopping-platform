@@ -2,9 +2,8 @@
 - 沈小洲 2019/6/26 19:48:00
 - 汪喆昊 2019/6/26 22:30:00
 
-
 ## 使用方法
-以运行如下命令运行[`sender.py`](./sender.py)向对应地址发送订单。
+以如下命令运行[`sender.py`](./sender.py)向对应地址发送订单。（请使用python2）
 ```shell
 python ./sender.py {host} {port} {file name}
 # Example
