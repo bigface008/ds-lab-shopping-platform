@@ -39,7 +39,7 @@ for order in orders:
     if r.status_code != requests.codes.accepted:
         print "Post of order", i, "failed"
         continue
-    order_id = r.json()["id"] # This line may fail if the server responds with wrong status code.
+    order_id = r.json()["id"]
     print "Post of order", order_id, "response code:", r.status_code, "content:", r.json()
 
     # Get result.
