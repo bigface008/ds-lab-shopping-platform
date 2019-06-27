@@ -1,16 +1,43 @@
-# Distributed System Lab - Shopping Platform
-## Introduction
-### Deadline
-July 14th, 2019 at 23:59
-### Lab Delivery:
-The delivery should content 4 parts as follow:
-1. A document，describing the system environment, install and configuration process, program design, the problems you encountered and the contribution of each student, etc.
-2. Source code.
-3. Results calculated using the test data.
-4. Name and student ID of each team member
-Compress all your lab materials to a file and name it as SDICLab5_team leaders'student ID.tar. the compressed format is not limited. Send to: linfusheng19@163.com
-### Members
-| School ID    | Name   |
+# Distributed System Lab - Distributed Transaction Settlement System
+## 1 Design
+### 1.1 Overview
+
+> TODO: Describe the goal of the system and the workflow through each module.
+
+### 1.2 Data structures
+
+> TODO: Describe data structures.
+
+### 1.3 Sender
+
+> TODO: Describe how it works.
+
+### 1.4 Receiver/HTTP server/Kafka producer
+
+> TODO: Describe how it works.
+
+### 1.5 Exchange rate updater
+
+> TODO: Describe how it works.
+
+### 1.6 Kafka consumer/Spark driver
+
+> TODO: Describe how it works.
+
+## 2 Implement
+
+> TODO: Put here links refering to documents(.md files) for each module.
+
+## 3 Deployment
+
+> TODO: Put here links refering to deployment/operation logs(.md files).
+
+## 4 Demo
+
+> TODO: Run a demo and put here its result.
+
+## 5 Members
+| Student ID   | Name   |
 | ------------ | ------ |
 | 5142609052   | 沈小洲 |
 | 516030910313 | 宋博仪 |
