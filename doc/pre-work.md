@@ -17,11 +17,11 @@
 ```
 # /etc/hosts
 
-127.0.0.1 localhost
-127.0.0.1 ds-1
-{internel-ip-of-ds-2} ds-2
-{internel-ip-of-ds-3} ds-3
-{internel-ip-of-ds-4} ds-4
+127.0.0.1  ds-1-local
+10.0.0.76  ds-1
+10.0.0.123 ds-2
+10.0.0.93  ds-3
+10.0.0.110 ds-4
 
 # ...
 ```
@@ -45,7 +45,7 @@
 stream {
   server {
     listen 30xx1;
-    proxy_pass ds-1:22;
+    proxy_pass ds-1-local:22;
   }
   server {
     listen 30xx2;
