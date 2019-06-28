@@ -32,6 +32,8 @@
 
 > TODO: Put here links refering to deployment/operation logs(.md files).
 
+1. [DB cluster: ProxySQL + MySQL](./doc/mysql.md)
+
 ## 4 Demo
 
 > TODO: Run a demo and put here its result.
