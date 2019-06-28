@@ -3,16 +3,31 @@
 ## 使用方法
 以如下命令运行[`sender.py`](./sender.py)向对应地址发送订单。（请使用python2）
 ```shell
-python ./sender.py {host} {port} {file name}
-# Example
-python ./sender.py 127.0.0.1 5000 orders.json
+$ # 先进入src/sender文件夹。
+$ python sender.py {host} {port} {file name}
+$ # Example
+$ python sender.py 127.0.0.1 5000 test/data/orders.json
 ```
 [`order.json`](./order.json)文件内有一个对象，[`orders.json`](./orders.json)文件则有一个数组。`sender.py`可以判断文件内容并发送正确消息。
 
-若要在本地测试Sender，可以运行[`receiver.py`](./receiver.py)模拟服务器。
-```shell
-python ./receiver.py # 默认运行在http://127.0.0.1:5000
-```
+### 在本地测试Sender
+
+1. 运行[`receiver.py`](./receiver.py)模拟服务器。receiver每就收一个order信息会将order_id加1，使得返回的order_id从1开始依次增加。
+   ```shell
+   $ python test/receiver.py # 运行在端口http://127.0.0.1:5000
+   ```
+
+2. 运行`sender.py`，输入的数据文件为`order.json`。
+   ```shell
+   $ python sender.py 127.0.0.1 5000 test/data/order.json
+   ```
+   ![img](./img/sender-1.png)
+
+3. 运行`sender.py`，输入的数据文件为`orders.json`。
+   ```shell
+   $ python sender.py 127.0.0.1 5000 test/data/order.json
+   ```
+   ![img](./img/sender-2.png)
 
 ## 接口
 ### Input
