@@ -80,7 +80,7 @@ ds-lab-shopping-platform/
 
    5. 推送工作到 Github
 
-      `git push --set-upstream origin`
+      `git push --set-upstream origin {your-branch}`
 
       或
 
@@ -92,7 +92,7 @@ ds-lab-shopping-platform/
 
       2. **base** 选择 {target-branch}, **compare** 选择 {your-branch}
 
-      3. 右侧面板 **Reviewers** 下选中评审员
+      3. 右侧面板 **Reviewers** 下选中所有人
 
       4. 右侧面板 **Assignees** 点击 **assign yourself**
 
@@ -100,13 +100,15 @@ ds-lab-shopping-platform/
 
       6. 点击 **Create pull request** 按钮
 
-### 评审员
+### 评审员 (所有人)
 
 #### 收到开发者 PR 后
 
-审核并讨论之后选择合并或否决 PR。
+1. 审核并在PR页面最下方编写自己的意见，并点击 **Comment** 提交意见
 
-若合并则勾选合并后删除原分支。
+2. 所有人都提交了同意之后，由最后提交的人合并
+
+3. 合并后删除原分支
 
 #### 一个模块完成阶段性工作后
 
@@ -116,7 +118,7 @@ ds-lab-shopping-platform/
 
 2. **base** 选择 master, **compare** 选择 模块分支
 
-3. 右侧面板 **Reviewers** 下选中总评审员
+3. 右侧面板 **Reviewers** 下选中所有人
 
 4. 右侧面板 **Assignees** 点击 **assign yourself**
 
@@ -126,7 +128,9 @@ ds-lab-shopping-platform/
 
 #### 收到评审员 PR 后
 
-审核并讨论之后选择合并或否决PR。
+1. 审核并在PR页面最下方编写自己的意见，并点击 **Comment** 提交意见
+
+2. 所有人都提交了同意之后，由最后提交的人合并
 
 ### 分支管理
 
