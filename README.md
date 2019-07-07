@@ -32,7 +32,8 @@
 
 > TODO: Put here links refering to deployment/operation logs(.md files).
 
-1. [DB cluster: ProxySQL + MySQL](./doc/mysql.md)
+1. [Zookeeper Cluster](./doc/zookeeper.md)
+2. [DB cluster: ProxySQL + MySQL](./doc/mysql.md)
 
 ## 4 Demo
 
