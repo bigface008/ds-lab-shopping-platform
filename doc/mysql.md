@@ -18,7 +18,7 @@
 2. 编写配置文件`mgr.cnf`并拷贝到ds-2、ds-3、ds-4的`/etc/mysql/mysql.conf.d/`中。
    ```conf
    [mysqld]
-   
+
    # common configures
    disabled_storage_engines="MyISAM,BLACKHOLE,FEDERATED,ARCHIVE,MEMORY"
    gtid_mode=ON
@@ -29,14 +29,14 @@
    binlog_format=ROW
    master_info_repository=TABLE
    relay_log_info_repository=TABLE
-   
+
    # group replication configures
    transaction_write_set_extraction=XXHASH64
    group_replication_group_name="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
    group_replication_group_seeds="ds-4:{port},ds-3:{port},ds-2:{port}"
    group_replication_start_on_boot=off
    group_replication_bootstrap_group=off
-   
+
    # specifics about each instance
    server_id={N}
    bind-address=ds-{N}
@@ -78,7 +78,7 @@
    ```
 
    然后安装Group Replication插件。
-   
+
    ```sql
    mysql> INSTALL PLUGIN group_replication SONAME 'group_replication.so';
    ```
@@ -156,7 +156,7 @@
    IF( (SELECT (SELECT GROUP_CONCAT(variable_value) FROM
    performance_schema.global_variables WHERE variable_name IN ('read_only',
    'super_read_only')) != 'OFF,OFF'), 'YES', 'NO') as read_only,
-   sys.gr_applier_queue_length() as transactions_behind, Count_Transactions_in_queue as 'transactions_to_cert' 
+   sys.gr_applier_queue_length() as transactions_behind, Count_Transactions_in_queue as 'transactions_to_cert'
    from performance_schema.replication_group_member_stats rgms
    where rgms.MEMBER_ID=(select gv.VARIABLE_VALUE from `performance_schema`.global_variables gv where gv.VARIABLE_NAME='server_uuid');$$
 
@@ -184,8 +184,9 @@
    mysql_variables={
      monitor_username="monitor"
      monitor_password="{password}"
+     server_version="8.0.16"
    }
-   
+
    mysql_servers=(
    {
      hostname="ds-2"
@@ -203,7 +204,7 @@
      hostgroup=2
    }
    )
-   
+
    mysql_group_replication_hostgroups=(
    {
      offline_hostgroup=1
@@ -215,7 +216,7 @@
      writer_is_also_reader=1
    }
    )
-   
+
    mysql_users=(
    {
      username="{dba-user}"
@@ -224,7 +225,17 @@
    }
    )
    ```
+
+   以上依次配置了：
+   - 用于查询msyql server状态的 monitor 账户
+   - 服务器版本号
+   - 每台服务器的地址和端口，和初始所在的组(2, 写组)
+   - 设置组复制主机组：离线组号为1、写组号为2、读组号为3、备份写组号为4,
+   - 设置最大可写为1、主节点可读可写
+   - 设置 mysql 用户和默认使用的主机组
+
    基于ProxySQL的配置模型（如下图），配置文件仅在ProxySQL第一次启动的时候才会生效。
+
    ```
    +-------------------------+
    |         RUNTIME         |
@@ -250,7 +261,7 @@
    ```
 
 8. 在每台机器上验证ProxySQL是否正常工作。
-   
+
    登录ProxySQL
    ```shell
    $ mysql -u {admin} -h127.0.0.1 -p -P {admin-port}
@@ -267,7 +278,7 @@
    ```shell
    $ mysql -u {dba-user} -h ds-{N} -p -P {port}
    ```
-   
+
    进行若干操作，验证结果是否正确。
    ```sql
    mysql> create database gr_test;
