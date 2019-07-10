@@ -12,8 +12,9 @@ spring.datasource.driverClassName = com.mysql.cj.jdbc.Driver
 spring.jpa.database = MYSQL
 spring.jpa.show-sql = true
 spring.jpa.hibernate.ddl-auto = update
-spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5Dialect
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL8Dialect
 spring.jpa.open-in-view=false
 
 spring.kafka.producer.bootstrap-servers = localhost:9090
+topic = my-topic
 server_id = 1

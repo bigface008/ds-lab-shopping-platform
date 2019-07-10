@@ -6,7 +6,7 @@
 
 - `/order`
 
-   Receiver接收Sender发来的新order的信息，并且发送该`Kafka`集群。完成后返回新的order的`id`。
+   Receiver接收Sender发来的新order的信息，并且发送到`Kafka`集群。完成后返回新的order的`id`。
 
 - `/order/{id}`
 
@@ -16,23 +16,21 @@
 
    Receiver接收Sender发来的消息`currency`，据此查询相应的amount并返回给Sender。
 
-## 使用方法
+## 构建
 
-1. 将相应的`receiver.jar`复制到相应服务器上，在同个目录的`config`文件夹下面放置`application.properties`。
+用IDEA侧面板中的maven打包或用命令行工具打包：
 
-       cp /path/to/receiver/src/main/resources/application.properties ./config/application.properties
+```
+mvn package -Dmaven.test.skip=true
+```
 
-2. 运行如下命令：
+最终得到 `target/receiver-x.y.z.jar`
 
-   ```shell
-   java -jar receiver.jar
-   ```
+## 配置
 
-   receiver即启动完毕。
+receive会读取 `{path-of-receiver.jar}/config/application.properties` 作为配置文件
 
-## 配置选项
-
-一般情况下，需要修改的配置包括以下几个。
+可以参照 [`receiver/src/main/resources/application.properties.example`](../src/receiver/src/main/resources/application.properties.example) 来编写该配置文件
 
 1. server.port
 
@@ -56,4 +54,8 @@
 
 6. server_id
 
-   表示当前服务器的序号。本项目中部署Receiver的服务器序号为。
+   表示当前服务器的序号
+
+7. topic
+
+   指定将新订单发送到kafka中的topic

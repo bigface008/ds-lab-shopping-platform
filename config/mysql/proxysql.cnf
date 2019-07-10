@@ -1,24 +1,24 @@
 #file proxysql.cfg
 
 ########################################################################################
-# This config file is parsed using libconfig , and its grammar is described in:        
-# http://www.hyperrealm.com/libconfig/libconfig_manual.html#Configuration-File-Grammar 
-# Grammar is also copied at the end of this file                                       
+# This config file is parsed using libconfig , and its grammar is described in:
+# http://www.hyperrealm.com/libconfig/libconfig_manual.html#Configuration-File-Grammar
+# Grammar is also copied at the end of this file
 ########################################################################################
 
 ########################################################################################
-# IMPORTANT INFORMATION REGARDING THIS CONFIGURATION FILE:                             
+# IMPORTANT INFORMATION REGARDING THIS CONFIGURATION FILE:
 ########################################################################################
-# On startup, ProxySQL reads its config file (if present) to determine its datadir. 
+# On startup, ProxySQL reads its config file (if present) to determine its datadir.
 # What happens next depends on if the database file (disk) is present in the defined
 # datadir (i.e. "/var/lib/proxysql/proxysql.db").
 #
-# If the database file is found, ProxySQL initializes its in-memory configuration from 
-# the persisted on-disk database. So, disk configuration gets loaded into memory and 
-# then propagated towards the runtime configuration. 
+# If the database file is found, ProxySQL initializes its in-memory configuration from
+# the persisted on-disk database. So, disk configuration gets loaded into memory and
+# then propagated towards the runtime configuration.
 #
-# If the database file is not found and a config file exists, the config file is parsed 
-# and its content is loaded into the in-memory database, to then be both saved on-disk 
+# If the database file is not found and a config file exists, the config file is parsed
+# and its content is loaded into the in-memory database, to then be both saved on-disk
 # database and loaded at runtime.
 #
 # IMPORTANT: If a database file is found, the config file is NOT parsed. In this case
@@ -26,7 +26,7 @@
 #            database ONLY. In other words, the configuration found in the proxysql.cnf
 #            file is only used to initial the on-disk database read on the first startup.
 #
-# In order to FORCE a re-initialise of the on-disk database from the configuration file 
+# In order to FORCE a re-initialise of the on-disk database from the configuration file
 # the ProxySQL service should be started with "service proxysql initial".
 #
 ########################################################################################
@@ -55,7 +55,7 @@ mysql_variables=
 	interfaces="0.0.0.0:{port}"
 	default_schema="information_schema"
 	stacksize=1048576
-	server_version="5.5.30"
+	server_version="8.0.16"
 	connect_timeout_server=3000
 # make sure to configure monitor username and password
 # https://github.com/sysown/proxysql/wiki/Global-variables#mysql-monitor_username-mysql-monitor_password
@@ -212,27 +212,27 @@ mysql_replication_hostgroups=
 
 # http://www.hyperrealm.com/libconfig/libconfig_manual.html#Configuration-File-Grammar
 #
-# Below is the BNF grammar for configuration files. Comments and include directives are not part of the grammar, so they are not included here. 
+# Below is the BNF grammar for configuration files. Comments and include directives are not part of the grammar, so they are not included here.
 #
 # configuration = setting-list | empty
 #
 # setting-list = setting | setting-list setting
-#     
+#
 # setting = name (":" | "=") value (";" | "," | empty)
-#     
+#
 # value = scalar-value | array | list | group
-#     
+#
 # value-list = value | value-list "," value
-#     
+#
 # scalar-value = boolean | integer | integer64 | hex | hex64 | float
 #                | string
-#     
+#
 # scalar-value-list = scalar-value | scalar-value-list "," scalar-value
-#     
+#
 # array = "[" (scalar-value-list | empty) "]"
-#     
+#
 # list = "(" (value-list | empty) ")"
-#     
+#
 # group = "{" (setting-list | empty) "}"
-#     
+#
 # empty =
