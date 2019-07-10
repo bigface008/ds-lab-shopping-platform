@@ -12,6 +12,7 @@ import java.util.Properties;
 @Component
 public class Sender {
     static private String bootstrapServers;
+    static private String topic;
 
     public Sender() {
     }
@@ -19,6 +20,11 @@ public class Sender {
     @Value("${spring.kafka.producer.bootstrap-servers}")
     public void setBootstrapServers(String servers) {
         Sender.bootstrapServers = servers;
+    }
+
+    @Value("${topic}")
+    public void setTopicName(String topic) {
+        Sender.topic = topic;
     }
 
     public void send(SendOrder sendOrder) {
@@ -35,7 +41,7 @@ public class Sender {
 
         Producer<String, String> producer = new KafkaProducer<>(props);
         System.out.println(JSON.toJSONString(sendOrder));
-        producer.send(new ProducerRecord<String, String>("my-topic", Integer.toString(0), JSON.toJSONString(sendOrder)));
+        producer.send(new ProducerRecord<String, String>(Sender.topic, Integer.toString(0), JSON.toJSONString(sendOrder)));
         producer.close();
     }
 }
