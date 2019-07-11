@@ -32,11 +32,18 @@
 
 > TODO: Put here links refering to deployment/operation logs(.md files).
 
+1. [Zookeeper Cluster](./doc/zookeeper.md)
+2. [DB cluster: ProxySQL + MySQL](./doc/mysql.md)
+
 ## 4 Demo
 
 > TODO: Run a demo and put here its result.
 
-## 5 Members
+## 5 Management
+
+[项目管理](./doc/management.md)
+
+## 6 Members
 | Student ID   | Name   |
 | ------------ | ------ |
 | 5142609052   | 沈小洲 |
