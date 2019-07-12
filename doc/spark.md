@@ -75,3 +75,24 @@
    ```bash
    $ ./sbin/start-slaves.sh
    ```
+## 验证是否部署成功
+
+1. 依次登陆四台虚拟机
+   ```bash
+   $ ssh ubuntu@{platform-ip} -p 30xx{N}
+   ```
+
+2. 查看每个虚拟机的状态
+   ```bash
+   $  ps aux | grep spark
+   ```
+   应当出现
+   ```bash
+   ubuntu   30814  0.4  3.8 4699180 316468 ?      Sl   18:15   0:08 /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java -cp /home/ubuntu/spark-2.4.3-bin-hadoop2.7/conf/:/home/ubuntu/spark-2.4.3-bin-hadoop2.7/jars/* -Dspark.deploy.recoveryMode=ZOOKEEPER -Dspark.deploy.zookeeper.url=ds-1:2181,ds-2:2181,ds-3:2181 -Dspark.deploy.zookeeper.dir=/spark -Xmx1g org.apache.spark.deploy.master.Master --host ds-1 --port 7077 --webui-port 8080
+   ```
+   这代表有一个master实例
+   ```bash
+   ubuntu   32152 61.3  2.4 4638716 203408 ?      Sl   18:51   0:04 /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java -cp /home/ubuntu/spark-2.4.3-bin-hadoop2.7/conf/:/home/ubuntu/spark-2.4.3-bin-hadoop2.7/jars/* -Dspark.deploy.recoveryMode=ZOOKEEPER -Dspark.deploy.zookeeper.url=ds-1:2181,ds-2:2181,ds-3:2181 -Dspark.deploy.zookeeper.dir=/spark -Xmx1g org.apache.spark.deploy.worker.Worker --webui-port 8081 spark://ds-1:7077
+   ```
+   这代表有一个slave实例
+   ds-1和ds-2应当分别出现一个master实例和一个slave实例，ds-3和ds-4应当分别出现一个slave实例
