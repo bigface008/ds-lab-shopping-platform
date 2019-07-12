@@ -62,6 +62,9 @@
    编辑配置文件[`~/spark-2.4.3-bin-hadoop2.7/conf/spark-env.sh`](../config/spark/spark-env.sh)
    ```
    export SPARK_DAEMON_JAVA_OPTS="-Dspark.deploy.recoveryMode=ZOOKEEPER -Dspark.deploy.zookeeper.url=ds-1:2181,ds-2:2181,ds-3:2181 -Dspark.deploy.zookeeper.dir=/spark"
+   export SPARK_WORKER_INSTANCES=1
+   export SPARK_WORKER_CORES=3
+   export SPARK_MASTER_IP=ds-1
    ```
    此配置文件（spark-env.sh）需要复制到四个虚拟机的对应路径。
 4. 启动master（在ds-1和ds-2上）
