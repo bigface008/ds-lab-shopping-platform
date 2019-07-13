@@ -1,0 +1,13 @@
+http {
+    upstream receiver {
+        server ds-1:{receiver-port};
+        server ds-3:{receiver-port};
+        server ds-4:{receiver-port};
+    }
+    server {
+        listen 30xx5;
+        location / {
+            proxy_pass http://receiver;
+        }
+    }
+}

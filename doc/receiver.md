@@ -59,3 +59,49 @@ receive会读取 `{path-of-receiver.jar}/config/application.properties` 作为�
 7. topic
 
    指定将新订单发送到kafka中的topic
+
+## 部署
+
+采用编写脚本的方式来一键部署
+
+- [build.sh](../script/receiver/build.sh)
+   1. 从github拉取源码
+   2. `mvn package`打包
+   3. 将打包好的`receiver.jar`、源码中的配置文件模板、启动脚本`start-receiver.sh`放在一个目录中
+
+- [start-receiver.sh](../script/receiver/start-receiver.sh)
+   1. 将传入的第一个参数作为 `server_id` 填写进配置文件
+   2. 启动 `receiver.jar` 并将日志追加写入 `receiver.log`
+
+- [deploy.sh](../script/receiver/deploy.sh)
+   1. 根据传入的第一个参数决定要部署在哪个机器
+   2. 用 `scp` 将 `build.sh` 生成的文件夹发送到目标机器上
+   3. 用 `ssh` 在目标机器上执行 `start-receiver.sh` 脚本
+
+### 部署步骤
+
+1. 构建项目
+
+```
+./build.sh
+```
+
+2. 参照 [`application.properties`](../config/receiver/application.properties) 修改配置文件模板
+
+```
+vim receiver/config/application.properties.example
+```
+
+3. 部署到远端
+
+```
+./deploy.sh 1
+./deploy.sh 3
+./deploy.sh 4
+```
+
+我们决定部署在 `ds-1`, `ds-3`, `ds-4` 三台机器上
+
+4. 添加 [nginx 配置](../config/nginx/site-available/default) 实现负载均衡
+
+   使得发往端口 30xx5 的HTTP请求会被负载均衡到 `ds-1`, `ds-3`, `ds-4` 的 {receiver-port} 上
