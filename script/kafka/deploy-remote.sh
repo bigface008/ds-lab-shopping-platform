@@ -4,5 +4,5 @@ set -e
 HOST=ubuntu@{remote-ip}
 PORT=30xx$1
 
-scp -P 30xx$1 -r kafka $HOST:~/
-ssh -p 30xx$1 ubuntu@{remote-ip} "cd ~/kafka; ./deploy.sh "$1
+scp -P $PORT -r kafka $HOST:~/
+ssh -p $PORT $HOST "cd ~/kafka; ./deploy.sh "$1
