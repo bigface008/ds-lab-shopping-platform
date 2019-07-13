@@ -124,6 +124,23 @@ Waiting for other instance releasing lock.
 
 可见 `ds-1` 上的 updater 在正常地更新 RMB 汇率，而 `ds-4` 上的 updater 作为其备份，在等待 `ds-1` 上的 updater 离线。
 
+查看 zookeeper 上的结点
+
+```
+$ zkCli.sh
+[zk: localhost:2181(CONNECTED) 0] ls /exchange_rate
+[EUR, JPY, RMB, USD]
+[zk: localhost:2181(CONNECTED) 1] get /exchange_rate/RMB
+1.81600
+[zk: localhost:2181(CONNECTED) 2] get /exchange_rate/RMB
+1.81600
+# 一分钟后
+[zk: localhost:2181(CONNECTED) 3] get /exchange_rate/RMB
+2.05600
+```
+
+可见 znode 中的值确实被 updater 更新了
+
 ### 验证故障转移
 
 
