@@ -9,7 +9,7 @@ cd ds-lab-shopping-platform/src/receiver
 mvn package -Dmaven.test.skip=true
 mv target/receiver-*.jar ../../../receiver/receiver.jar
 
-if [ ! -d "../../../receiver/config/application.properties.example" ];then
+if [ ! -f "../../../receiver/config/application.properties.example" ];then
 mv src/main/resources/application.properties.example ../../../receiver/config/
 fi
 cd ../../..

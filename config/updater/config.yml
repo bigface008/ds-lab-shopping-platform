@@ -1,4 +1,4 @@
-currency: RMB
+currency: CURRENCY
 period: 55
 url: zk-host:zk-port
 znode: /exchange_rate
