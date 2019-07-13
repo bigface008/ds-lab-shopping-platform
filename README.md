@@ -2,7 +2,18 @@
 ## 1 Design
 ### 1.1 Overview
 
-> TODO: Describe the goal of the system and the workflow through each module.
+本次 Lab 我们实现了一个分布式业务处理系统。
+
+国际化商家出售多种商品，每种商品的价格使用的货币有所不同。而客户可以提交订单购买多种商品，并使用某一种货币来支付。我们的系统可以接受这种订单并换算货币得出客户以自己的货币应付的款额。
+
+整个系统的各个模块可部署在不同的机器上，通过网络组成了分布式系统。并且所有模块都以一定程度的高可用形式来实现和部署。
+
+各个模块的功能大致如下：
+
+- Sender 模拟客户发送新订单
+- Receiver 接受用户订单并将新订单通过 Kafka 集群传递给 Paying Calculator；还接受查询请求，从 Mysql 中将订单处理结果和成交总额取出并返回
+- Exchange rate updater 每分钟更新汇率到 Zookeeper 中
+- Paying alculator 从 Zookeeper 获取最新汇率并计算新订单应付款，将结果存入 Mysql
 
 ### 1.2 Data structures
 
@@ -35,7 +46,7 @@
    |`user_id` _varchar(100)_|用户ID|
    |`initiator` _varchar(100)_|用户使用的货币|
    |`success` _tinyint(1)_|是否成功, 为null则表示处理中|
-   |`paid` _decimal(65,30_|以用户使用的货币的应付款|
+   |`paid` _decimal(65,30)_|以用户使用的货币的应付款|
 
 - 成交额(sql, 存储在mysql中)
 
@@ -66,7 +77,7 @@
 
 随机生成汇率并将指定货币的汇率写入 Zookeeper 对应的 znode 中
 
-### 1.6 Kafka consumer/Spark driver
+### 1.6 Paying calculator/Kafka consumer/Spark driver
 
 > TODO: Describe how it works.
 
