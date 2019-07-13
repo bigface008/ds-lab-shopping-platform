@@ -10,39 +10,39 @@
 
    |Field|Description|
    |--|--|
-   |user_id _string_|用户ID|
-   |initiator _string_|用户使用的货币, 可以是 `RMB`, `USD`, `JPY`, `EUR`|
-   |time" _int_|发送订单的时间戳|
-   |items" _[]_|货物列表|
-   |items[].id _int_|货物ID|
-   |items[].number _int_|货物数量|
+   |`user_id` _string_|用户ID|
+   |`initiator` _string_|用户使用的货币, 可以是 `RMB`, `USD`, `JPY`, `EUR`|
+   |`time` _int_|发送订单的时间戳|
+   |`items` _[]_|货物列表|
+   |`items[].id` _int_|货物ID|
+   |`items[].number` _int_|货物数量|
 
 - 商品(sql, 存储在mysql中)
 
    |Field|Description|
    |--|--|
-   |id _int(10) unsigned_|ID|
-   |name _varchar(200)_|名字|
-   |price _decimal(65,30)_|价格|
-   |currency _varchar(100)_|价格使用的货币|
-   |inventory _int(10) unsigned_|库存|
+   |`id` _int(10) unsigned_|ID|
+   |`name` _varchar(200)_|名字|
+   |`price` _decimal(65,30)_|价格|
+   |`currency` _varchar(100)_|价格使用的货币|
+   |`inventory` _int(10) unsigned_|库存|
 
 - 订单结果(sql, 存储在mysql中)
 
    |Field|Description|
    |--|--|
-   |id _varchar(100)_|订单ID|
-   |user_id _varchar(100)_|用户ID|
-   |initiator _varchar(100)_|用户使用的货币|
-   |success _tinyint(1)_|是否成功, 为null则表示处理中|
-   |paid _decimal(65,30_|以用户使用的货币的应付款|
+   |`id` _varchar(100)_|订单ID|
+   |`user_id` _varchar(100)_|用户ID|
+   |`initiator` _varchar(100)_|用户使用的货币|
+   |`success` _tinyint(1)_|是否成功, 为null则表示处理中|
+   |`paid` _decimal(65,30_|以用户使用的货币的应付款|
 
 - 成交额(sql, 存储在mysql中)
 
    |Field|Description|
    |--|--|
-   |currency _varchar(100)_|货币|
-   |amount _decimal(65,30)_|全期成交额总量|
+   |`currency` _varchar(100)_|货币|
+   |`amount` _decimal(65,30)_|全期成交额总量|
 
 - 汇率(存储在zookeeper中的/exchange_rate结点下)
 
