@@ -1,0 +1,10 @@
+[Unit]
+Description=Kafka broker
+
+[Service]
+ExecStart=/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/cluster.properties
+ExecStop=/opt/kafka/bin/kafka-server-stop.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
