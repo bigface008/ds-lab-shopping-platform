@@ -53,7 +53,7 @@ public class Calculator {
             result.setInitiator(order.getInitiator());
             result.setSuccess(null);
             result.setPaid(null);
-            Session session = new Configuration().configure(new File(calcConf.getHiberConf())).buildSessionFactory().openSession();
+            Session session = new Configuration().configure(args[1]).buildSessionFactory().openSession();
             Transaction tx = session.beginTransaction();
             if (session.get(ResultEntity.class, result.getId()) == null) {
                 session.save(result);
@@ -65,7 +65,7 @@ public class Calculator {
 
         // filter out acceptable order
         JavaDStream<NewOrder> successOrder = newOrder.filter(order -> {
-            Session session = new Configuration().configure(new File(calcConf.getHiberConf())).buildSessionFactory().openSession();
+            Session session = new Configuration().configure(args[1]).buildSessionFactory().openSession();
 
             // do exactly once
             ResultEntity result = session.get(ResultEntity.class, order.getId());
@@ -113,7 +113,7 @@ public class Calculator {
             if (!partitionOrders.hasNext()) {
                 return;
             }
-            Session session = new Configuration().configure(new File(calcConf.getHiberConf())).buildSessionFactory().openSession();
+            Session session = new Configuration().configure(args[1]).buildSessionFactory().openSession();
             ExchangeRateFetcher fetcher = new ExchangeRateFetcher(calcConf.getZkUrl(), calcConf.getZnode());
 
             while (partitionOrders.hasNext()) {

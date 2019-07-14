@@ -17,6 +17,4 @@ public class CalculatorConfig implements Serializable {
     private String zkUrl;
     @JSONField(name = "exchange-rate-znode")
     private String znode = "/exchange-rate";
-    @JSONField(name = "hibernate-config")
-    private String hiberConf;
 }

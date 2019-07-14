@@ -1,7 +1,7 @@
 {
-  "kafka-url": "broker-host1:port,...",
+  "kafka-url": "{broker-host-port-list}",
   "topic": "dslab-new-order",
   "consumer-group": "PayingCalculator",
-  "zookeeper-url": "zookeeper-host1:port,...",
+  "zookeeper-url": "{zookeeper-host-port-list}",
   "exchange-rate-znode": "/exchange_rate"
 }
