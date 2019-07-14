@@ -79,13 +79,16 @@
 
 ### 1.6 Paying calculator/Kafka consumer/Spark driver
 
-> TODO: Describe how it works.
+从 kafka 中获取新订单，并通过库存比对确定是否可以接受，对于可以接受的订单根据从 zookeeper 获得的汇率信息计算其应付款，并累算总的成交额
+
+整个流程以Spark平台的模型实现
 
 ## 2 Implement
 
 1. [Sender](./doc/sender.md)
 2. [Receiver](./doc/receiver.md)
 3. [Exchange rate updater](./doc/exchange_rate_updater.md)
+4. [Paying calculator](./doc/calculator.md)
 
 ## 3 Deployment
 
@@ -93,23 +96,22 @@
 
 1. [Zookeeper Cluster](./doc/zookeeper.md)
 2. [Kafka Cluster](./doc/kafka.md)
-3. [DB cluster: ProxySQL + MySQL](./doc/mysql.md)
-4. [Receiver](./doc/receiver.md#部署)
-5. [Exchange rate updater](./doc/exchange_rate_updater.md#部署)
+3. [Spark Cluster](./doc/spark.md)
+4. [DB cluster: ProxySQL + MySQL](./doc/mysql.md)
+5. [Receiver](./doc/receiver.md#部署)
+6. [Exchange rate updater](./doc/exchange_rate_updater.md#部署)
+7. [Paying calculator](./doc/calculator.md#部署)
 
 
-## 4 Demo
-
-> TODO: Run a demo and put here its result.
-
-## 5 Management
+## 4 Management
 
 [项目管理](./doc/management.md)
 
-## 6 Members
-| Student ID   | Name   |
-| ------------ | ------ |
-| 5142609052   | 沈小洲 |
-| 516030910313 | 宋博仪 |
-| 516030910459 | 邵欣阳 |
-| 516030910460 | 汪喆昊 |
+## 5 Members & Contribution
+
+| Student ID   | Name   | Work |
+| ------------ | ------ |------|
+| 5142609052   | 沈小洲 |项目规划、环境配置、Nginx和Kafka的搭建、帮助组员实现和部署各自的模块|
+| 516030910313 | 宋博仪 |Spark的搭建、Paying calculator的实现|
+| 516030910459 | 邵欣阳 |Zookeeper的搭建、Exchange rate updater的实现|
+| 516030910460 | 汪喆昊 |Mysql的搭建、Sender和Receiver的实现|
