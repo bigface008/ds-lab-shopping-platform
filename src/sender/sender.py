@@ -52,7 +52,7 @@ for order in orders:
     while True:
         time.sleep(1)
         # r = requests.get(GET_ORDER_URL + '%s' % order_id)
-        r = requests.get(GET_ORDER_URL + '%s' % '1235234')
+        r = requests.get(GET_ORDER_URL + '%s' % order_id)
 
         if r.status_code != requests.codes.ok:
             print "Get of", order_id, "order failed with wrong status code."
