@@ -58,6 +58,8 @@ for order in orders:
             print "Get of", order_id, "order failed with wrong status code."
             continue
         if_succeed = r.json()["success"]
+        if r.json()["paid"] is None:
+            continue
         if if_succeed == True:
             print "Get of order", order_id, "response code:", r.status_code, "content:", r.json()
             break
