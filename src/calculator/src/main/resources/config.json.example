@@ -1,0 +1,8 @@
+{
+  "kafka-url": "broker-host1:port,...",
+  "topic": "dslab-new-order",
+  "consumer-group": "PayingCalculator",
+  "zookeeper-url": "zookeeper-host1:port,...",
+  "exchange-rate-znode": "/exchange_rate",
+  "hibernate-config": "/path/to/hibernate/config"
+}

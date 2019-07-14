@@ -4,15 +4,15 @@ import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ExchangeRateFetcher {
-    private Map<String, ExchangeRate> rates;
     private String zkUrl;
     private String znode;
+    // rater fetcher for each currency
+    private Map<String, ExchangeRate> rates;
 
     public ExchangeRateFetcher(String zkUrl, String znode) {
         rates = new HashMap<>();
@@ -22,6 +22,7 @@ public class ExchangeRateFetcher {
 
     public BigDecimal getRate(String currency) throws IOException {
         ExchangeRate rate = rates.get(currency);
+        // if fetcher for this currency is not ready
         if (rate == null) {
             rate = new ExchangeRate(zkUrl, znode, currency);
             rates.put(currency, rate);
@@ -53,6 +54,7 @@ class ExchangeRate implements Watcher, AsyncCallback.DataCallback {
     }
 
     BigDecimal getRate() {
+        // blocked until rate is got
         while (rate == null) {
             synchronized (this) {
                 try {
@@ -70,6 +72,7 @@ class ExchangeRate implements Watcher, AsyncCallback.DataCallback {
             String path = event.getPath();
             if (path != null && path.equals(znode)) {
                 System.out.println("[ExchangeRateFetcher] Znode updated!");
+                // get node data when it changed
                 zk.getData(this.znode, true, this, null);
             }
         }
@@ -77,6 +80,7 @@ class ExchangeRate implements Watcher, AsyncCallback.DataCallback {
 
     public void processResult(int rc, String path, Object ctx, byte[] data, Stat stat) {
         switch (KeeperException.Code.get(rc)) {
+            // update rate and wake up any thread blocked at getRate()
             case OK:
                 System.out.println("[ExchangeRateFetcher] fetch success!");
                 rate = new BigDecimal(new String(data));
@@ -84,6 +88,7 @@ class ExchangeRate implements Watcher, AsyncCallback.DataCallback {
                     notifyAll();
                 }
                 break;
+            // retry get data
             case NONODE:
             case SESSIONEXPIRED:
             case NOAUTH:
