@@ -92,8 +92,6 @@
 
 ## 3 Deployment
 
-> TODO: Put here links refering to deployment/operation logs(.md files).
-
 1. [Zookeeper Cluster](./doc/zookeeper.md)
 2. [Kafka Cluster](./doc/kafka.md)
 3. [Spark Cluster](./doc/spark.md)
