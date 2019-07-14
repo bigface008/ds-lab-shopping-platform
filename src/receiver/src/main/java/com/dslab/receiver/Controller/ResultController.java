@@ -36,7 +36,7 @@ public class ResultController {
         System.out.println("GET /order/: id: " + id);
         ResultEntity resultEntity = resultService.getResult(id);
         if (resultEntity == null) {
-            resultEntity = new ResultEntity(id, "", "", (byte) 0x0, new BigDecimal(0.0));
+            resultEntity = new ResultEntity(id, "", "", null, new BigDecimal(0.0));
         }
         return resultEntity;
     }
