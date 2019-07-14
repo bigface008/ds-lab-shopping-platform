@@ -58,16 +58,18 @@ for order in orders:
             print "Get of", order_id, "order failed with wrong status code."
             continue
         if_succeed = r.json()["success"]
-        if if_succeed == True:
-            print "Get of order", order_id, "response code:", r.status_code, "content:", r.json()
-            break
-        elif if_succeed == False:
-            print "Get of order", order_id, "failed with report of failure."
-            break
+        if_paid = r.json()["paid"]
+        if if_paid:
+            if if_succeed == True:
+                print "Get of order", order_id, "response code:", r.status_code, "content:", r.json()
+                break
+            elif if_succeed == False:
+                print "Get of order", order_id, "failed with report of failure."
+                break
         else:
             pass
-
     i += 1
+
 
 # Get amount.
 for currency in CURRENCIES:
