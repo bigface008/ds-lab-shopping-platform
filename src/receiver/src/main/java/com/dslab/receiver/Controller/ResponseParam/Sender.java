@@ -41,7 +41,7 @@ public class Sender {
 
         Producer<String, String> producer = new KafkaProducer<>(props);
         System.out.println(JSON.toJSONString(sendOrder));
-        producer.send(new ProducerRecord<String, String>(Sender.topic, Integer.toString(0), JSON.toJSONString(sendOrder)));
+        producer.send(new ProducerRecord<String, String>(Sender.topic, null, JSON.toJSONString(sendOrder)));
         producer.close();
     }
 }
