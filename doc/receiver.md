@@ -4,15 +4,15 @@
 
 ## API
 
-- `/order`
+- **POST** `/order`
 
    Receiver接收Sender发来的新order的信息，并且发送到`Kafka`集群。完成后返回新的order的`id`。
 
-- `/order/{id}`
+- **GET** `/order/{id}`
 
    Receiver接收Sender发来的消息`id`，据此查询相应的order并返回给Sender。
 
-- `/order/{currency}`
+- **GET** `/amount/{currency}`
 
    Receiver接收Sender发来的消息`currency`，据此查询相应的amount并返回给Sender。
 
