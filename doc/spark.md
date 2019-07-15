@@ -82,11 +82,13 @@ server {
 通过浏览器打开 `http://{remote-ip}:30xx8` 可以查看 master 1 的状态，可以看到
 
 > Status: ALIVE
+>
 > Workers (4)
 
 而打开 `http://{remote-ip}:30xx9` 可以查看 master 2 的状态，可以看到
 
 > Status: STANDBY
+>
 > Workers (0)
 
 这意味着所有 4 个 worker 都登记在 master 1 之上，master 2 作为备份处于不活跃的状态。
@@ -100,6 +102,7 @@ server {
 但打开 `http://{remote-ip}:30xx9` 后可以看到
 
 > Status: ALIVE
+>
 > Workers (4)
 
 即所有 worker 都转移到 master 2 上了

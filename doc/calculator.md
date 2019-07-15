@@ -92,6 +92,7 @@ mv target/calculator-*-jar-with-dependencies.jar ./calculator.jar
 部署完成后可以在 spark 集群 master 的 web ui 看到
 
 > Running Applications (1)
+>
 > Running Drivers (1)
 
 当前集群中正在运行一个驱动程序和一个应用程序(Java Stream 上下文)。
