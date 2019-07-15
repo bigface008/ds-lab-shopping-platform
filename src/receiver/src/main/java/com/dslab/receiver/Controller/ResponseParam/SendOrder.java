@@ -28,7 +28,6 @@ public class SendOrder {
         this.initiator = initiator;
         this.items = items;
         this.timestamp = System.currentTimeMillis();
-        this.orderId = (new OrderIdGenerator()).generateId();
         this.success = false;
     }
 

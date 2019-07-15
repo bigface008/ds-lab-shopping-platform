@@ -5,18 +5,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OrderIdGenerator {
-    static private String server_id = "";
+    @Value("${server_id}")
+    private String server_id;
 
     private long count = 0;
 
     private long timestamp = System.currentTimeMillis();
 
     public OrderIdGenerator() {}
-
-    @Value("${server_id}")
-    public void setServerId(String server_id) {
-        OrderIdGenerator.server_id = server_id;
-    }
 
     public String generateId() {
         long time = System.currentTimeMillis();
@@ -30,7 +26,7 @@ public class OrderIdGenerator {
         } else {
             this.timestamp = time;
         }
-        return String.valueOf((this.timestamp << 20) + (Long.parseLong(OrderIdGenerator.server_id) << 16) + this.count);
+        return String.valueOf((this.timestamp << 20) + (Long.parseLong(this.server_id) << 16) + this.count);
     }
 
 

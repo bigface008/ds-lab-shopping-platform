@@ -2,6 +2,7 @@ package com.dslab.receiver.Controller;
 
 import com.dslab.receiver.Controller.RequestParam.ReceiveOrder;
 import com.dslab.receiver.Controller.ResponseParam.OrderId;
+import com.dslab.receiver.Controller.ResponseParam.OrderIdGenerator;
 import com.dslab.receiver.Controller.ResponseParam.SendOrder;
 import com.dslab.receiver.Controller.ResponseParam.Sender;
 import com.dslab.receiver.Service.ResultService;
@@ -17,10 +18,15 @@ public class ResultController {
     @Autowired
     private ResultService resultService;
 
+    @Autowired
+    private OrderIdGenerator gen;
+
     @PostMapping(value = "/order")
     public OrderId senderNewOrder(@RequestBody ReceiveOrder receiveOrder, HttpServletResponse response) {
         // Pack up ReceiveOrder object to SendOrder.
         SendOrder sendOrder = receiveOrder.change2SendOrder();
+        sendOrder.setOrderId(gen.generateId());
+
         System.out.println("POST /order: " + sendOrder.toString());
 
         // Send order to Kafka.
