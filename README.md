@@ -127,12 +127,15 @@
 6. [Exchange rate updater](./doc/exchange_rate_updater.md#部署)
 7. [Paying calculator](./doc/calculator.md#部署)
 
+## 5 Demo
 
-## 5 Management
+![Demo](./doc/img/demo.png)
+
+## 6 Management
 
 [项目管理](./doc/management.md)
 
-## 6 Members & Contribution
+## 7 Members & Contribution
 
 | Student ID   | Name   | Work |
 | ------------ | ------ |------|
