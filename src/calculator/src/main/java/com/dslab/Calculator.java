@@ -18,6 +18,7 @@ import org.apache.spark.streaming.kafka010.*;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
@@ -45,7 +46,8 @@ public class Calculator {
 
         // get new order from message record
         // save order to result with success and paid set to null
-        JavaDStream<NewOrder> newOrder = stream.map(record -> {
+        stream
+        .map(record -> {
             NewOrder order = record.value();
             ResultEntity result = new ResultEntity();
             result.setId(order.getId());
@@ -53,42 +55,43 @@ public class Calculator {
             result.setInitiator(order.getInitiator());
             result.setSuccess(null);
             result.setPaid(null);
-            Session session = new Configuration().configure(new File(args[1])).buildSessionFactory().openSession();
-            Transaction tx = session.beginTransaction();
-            if (session.get(ResultEntity.class, result.getId()) == null) {
-                session.save(result);
-            }
-            tx.commit();
-            session.close();
-            return order;
-        });
 
-        // filter out acceptable order
-        JavaDStream<NewOrder> successOrder = newOrder.filter(order -> {
-            Session session = new Configuration().configure(new File(args[1])).buildSessionFactory().openSession();
+            HiberSession hs = new HiberSession(args[1]);
+            hs.beginTransaction();
+            if (hs.session().get(ResultEntity.class, result.getId()) == null) {
+                hs.session().save(result);
+            }
+            hs.commit();
+            hs.close();
+
+            return order;
+        })
+        .filter(order -> {
+            HiberSession hs = new HiberSession(args[1]);
 
             // do exactly once
-            ResultEntity result = session.get(ResultEntity.class, order.getId());
+            ResultEntity result = hs.session().get(ResultEntity.class, order.getId());
             if (result.getSuccess() != null) {
-                session.close();
+                hs.close();
                 return result.getSuccess().equals((byte)1);
             }
 
-            Transaction tx = session.beginTransaction();
             // collect commodity whose inventory has been changed
             ArrayList<CommodityEntity> handled = new ArrayList<>();
             // sort items by ID to avoid dead lock in mysql
             ArrayList<OrderItem> items = order.getItems();
             items.sort(Comparator.comparing(OrderItem::getId));
+
+            hs.beginTransaction();
             for (OrderItem item: order.getItems()) {
-                CommodityEntity c = session.get(CommodityEntity.class, Integer.parseInt(item.getId()));
+                CommodityEntity c = hs.session().get(CommodityEntity.class, Integer.parseInt(item.getId()));
                 // if no such commodity or no enough inventory
                 if (c == null || c.getInventory() < item.getNumber()) {
                     result.setSuccess((byte)0);
                     result.setPaid(new BigDecimal(0));
-                    session.save(result);
-                    tx.commit();
-                    session.close();
+                    hs.session().save(result);
+                    hs.commit();
+                    hs.close();
                     System.out.println("[OrderFail] " + JSON.toJSONString(order));
                     return false;  // won't appear at next rdd
                 } else {
@@ -98,27 +101,26 @@ public class Calculator {
             }
             // save the changes
             for (CommodityEntity c: handled) {
-                session.save(c);
+                hs.session().save(c);
             }
             result.setSuccess((byte)1);
-            session.save(result);
-            tx.commit();
-            session.close();
+            hs.session().save(result);
+            hs.commit();
+            hs.close();
             System.out.println("[OrderSuccess] " + JSON.toJSONString(order));
             return true;  // calculate paid at next rdd
-        });
-
-        successOrder.foreachRDD(rdd -> rdd.foreachPartition(partitionOrders -> {
+        })
+        .foreachRDD(rdd -> rdd.foreachPartition(partitionOrders -> {
             // to avoid useless connection to database
             if (!partitionOrders.hasNext()) {
                 return;
             }
-            Session session = new Configuration().configure(new File(args[1])).buildSessionFactory().openSession();
+            HiberSession hs = new HiberSession(args[1]);
             ExchangeRateFetcher fetcher = new ExchangeRateFetcher(calcConf.getZkUrl(), calcConf.getZnode());
 
             while (partitionOrders.hasNext()) {
                 NewOrder order = partitionOrders.next();
-                ResultEntity result = session.get(ResultEntity.class, order.getId());
+                ResultEntity result = hs.session().get(ResultEntity.class, order.getId());
 
                 // do exactly once
                 if (result.getPaid() != null) {
@@ -126,11 +128,8 @@ public class Calculator {
                 }
 
                 BigDecimal paid = new BigDecimal(0).setScale(5, RoundingMode.HALF_EVEN);
-                // sort items by ID to avoid dead lock in mysql
-                ArrayList<OrderItem> items = order.getItems();
-                items.sort(Comparator.comparing(OrderItem::getId));
-                for (OrderItem item: items) {
-                    CommodityEntity c = session.get(CommodityEntity.class, Integer.parseInt(item.getId()));
+                for (OrderItem item: order.getItems()) {
+                    CommodityEntity c = hs.session().get(CommodityEntity.class, Integer.parseInt(item.getId()));
                     // rate of commodity currency to union currency
                     BigDecimal cRate = fetcher.getRate(c.getCurrency());
                     // rate of customer currency to union currency
@@ -142,9 +141,9 @@ public class Calculator {
                 }
                 result.setPaid(paid);
                 // save result and amount to database
-                Transaction tx = session.beginTransaction();
-                session.save(result);
-                AmountEntity amount = session.get(AmountEntity.class, order.getInitiator());
+                hs.beginTransaction();
+                hs.session().save(result);
+                AmountEntity amount = hs.session().get(AmountEntity.class, order.getInitiator());
                 if (amount == null) {
                     amount = new AmountEntity();
                     amount.setCurrency(order.getInitiator());
@@ -153,13 +152,13 @@ public class Calculator {
                     // amount = amount + paid
                     amount.setAmount(amount.getAmount().add(paid));
                 }
-                session.save(amount);
-                tx.commit();
+                hs.session().save(amount);
+                hs.commit();
                 System.out.println("[OrderPaid] " + order.getId() + ": " + paid.toString());
             }
 
             fetcher.close();
-            session.close();
+            hs.close();
         }));
 
         jssc.start();
