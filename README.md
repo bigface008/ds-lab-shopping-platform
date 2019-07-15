@@ -83,14 +83,41 @@
 
 整个流程以Spark平台的模型实现
 
-## 2 Implement
+## 2 Architecture
+
+### 2.1 物理架构
+
+![physical-architecture](./doc/img/phys-arch.png)
+
+网络和服务器都是基于OpenStack搭建的，由课程提供的设施。
+
+能供调整的只有实例性能和数量。
+
+这里选择配置了 4VCPU, 8G RAM, 80G disk 的 4 个实例。
+
+4 个实例分别命名为 `ds-1`, `ds-2`, `ds-3`, `ds-4`, 安装了 ubuntu-x86_64-16.04
+
+### 2.2 系统架构
+
+![system-architecture](./doc/img/sys-arch.png)
+
+其中除了 nginx 的所有组件和模块，都采用了一定的冗余来实现高可用。
+
+1. Receiver 本身实现为无状态的 HTTP 服务器，我们在不同的机器上部署了 3 个实例，用来并行处理大量订单。
+2. Exchange Rate Updater 采用分布式锁进行同步，一个实例执行更新任务，其余实例备份待机。我们为每种货币部署了两个实例进行更新。
+3. 我们部署了三个 Zookeeper 实例组成最小的集群。
+4. 我们在每一个机器上都部署了 Kafka broker 提高读效率, 并设置每个消息的每个 partition 会至少有三个 replication 保证数据可靠。
+5. Mysql 官方提供了 Group Replication 的高可用一致性方案，我们在之上搭建了 Proxysql 作为均衡负载、读写分离、缓存。同时部署了两个proxysql以防单点故障，依靠客户端connector来切换。
+6. 我们在所有机器上部署了 Spark worker，又部署了 2 个 Spark master。Spark的集群模式是借助zookeeper的备份模式，和我们的exchange rate updater有些类似，一次只有一个master工作，但故障时可以方便地切换到另一个master上。至于worker本身就是故障可恢复的设计，部署4个worker只是为了性能考量。
+
+## 3 Implement
 
 1. [Sender](./doc/sender.md)
 2. [Receiver](./doc/receiver.md)
 3. [Exchange rate updater](./doc/exchange_rate_updater.md)
 4. [Paying calculator](./doc/calculator.md)
 
-## 3 Deployment
+## 4 Deployment
 
 > TODO: Put here links refering to deployment/operation logs(.md files).
 
@@ -103,11 +130,11 @@
 7. [Paying calculator](./doc/calculator.md#部署)
 
 
-## 4 Management
+## 5 Management
 
 [项目管理](./doc/management.md)
 
-## 5 Members & Contribution
+## 6 Members & Contribution
 
 | Student ID   | Name   | Work |
 | ------------ | ------ |------|
